@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelDream — Особистий blog про подорожі</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">TravelDream</div>
+        <nav>
+            <ul>
+                <li><a onclick="switchPage('home')" id="nav-home" class="active">Головна</a></li>
+                <li><a onclick="switchPage('countries')" id="nav-countries">Країни світу</a></li>
+                <li><a onclick="switchPage('routes')" id="nav-routes">Маршрути</a></li>
+                <li><a onclick="switchPage('tips')" id="nav-tips">Поради</a></li>
+                <li><a onclick="switchPage('gallery')" id="nav-gallery">Галерея фото</a></li>
+                <li><a onclick="switchPage('contacts')" id="nav-contacts">Контакти</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="page-section active-section">
+        <div class="hero">
+            <div class="hero-text">
+                <div class="hero-author">Автор проекту: Муц Софія, 10-Г клас</div>
+                <h1>Надихайся на нові <span>Подорожі</span> разом з нами!</h1>
+                <p>TravelDream — це твій персональний інформаційний гід та блог про найдивовижніші куточки нашої планети. Тут зібрані детальні описи цікавих місць, практичні поради для самостійних мандрівників та готові насичені маршрути.</p>
+                <button class="cta-btn" onclick="switchPage('countries')">Досліджувати країни</button>
+            </div>
+            <div class="hero-video">
+                <video src="https://assets.mixkit.co/videos/preview/mixkit-beautiful-aerial-view-of-a-mountain-landscape-42111-large.mp4" autoplay loop muted></video>
+            </div>
+        </div>
+
+        <h2 class="section-title">Популярні напрямки</h2>
+        <p class="section-subtitle">Ось куди мандрівники мріють потрапити найбільше цього року</p>
+
+        <div class="grid-container">
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80')">
+                    <span class="card-badge">Екзотика</span>
+                    <span class="card-price">від $850</span>
+                </div>
+                <div class="card-content">
+                    <h3>Острів Балі, Індонезія</h3>
+                    <p>Справжній тропічний рай з величними вулканами, зеленими рисовими терасами, унікальною культурою та безкрайнім океаном.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=500&q=80')">
+                    <span class="card-badge">Романтика</span>
+                    <span class="card-price">від $420</span>
+                </div>
+                <div class="card-content">
+                    <h3>Париж, Франція</h3>
+                    <p>Місто світла, культури, моди та гастрономії. Ейфелева вежа, Лувр та затишні кав'ясні на берегах Сени вже чекають на тебе.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=500&q=80')">
+                    <span class="card-badge">Футуризм</span>
+                    <span class="card-price">від $1100</span>
+                </div>
+                <div class="card-content">
+                    <h3>Токіо, Японія</h3>
+                    <p>Неймовірний мікс ультрасучасних хмарочосів, неонових вогнів та стародавніх тихих храмів з традиціями, які вражають світ.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="countries-holder"></div>
+    <div id="routes-holder"></div>
+    <div id="tips-holder"></div>
+    <div id="gallery-holder"></div>
+    <div id="contacts-holder"></div>
+
+    <footer>
+        <p>© 2026 TravelDream. Усі права захищені. Розробка сайту: Муц Софія, 10-Г клас.</p>
+    </footer>
+
+    <script>
+        // Функція для плавного перемикання між сторінками
+        function switchPage(pageId) {
+            // Знаходимо абсолютно всі секції на сайті
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => {
+                section.classList.remove('active-section'); // Ховаємо їх
+            });
+
+            // Скидаємо активний стан у кнопок меню
+            const navLinks = document.querySelectorAll('nav ul li a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Показуємо ту секцію, на яку натиснули
+            const targetSection = document.getElementById(pageId);
+            if(targetSection) {
+                targetSection.classList.add('active-section');
+            }
+            
+            // Підсвічуємо поточну кнопку в меню
+            const targetNav = document.getElementById('nav-' + pageId);
+            if(targetNav) {
+                targetNav.classList.add('active');
+            }
+
+            // Автоматично прокручуємо вгору сторінки
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Функція, яка завантажує код з інших файлів (.html) та налаштовує їх приховування
+        async function loadSections() {
+            const files = ['countries', 'routes', 'tips', 'gallery', 'contacts'];
+            for(let file of files) {
+                try {
+                    let response = await fetch(file + '.html');
+                    if(response.ok) {
+                        let text = await response.text();
+                        const holder = document.getElementById(file + '-holder');
+                        holder.innerHTML = text; // Вставляємо отриманий HTML-код
+                        
+                        // Розумне приховування: знаходимо завантажену секцію всередині холдера
+                        const loadedSection = holder.querySelector('.page-section');
+                        if (loadedSection && loadedSection.id !== 'home') {
+                            // Обов'язково забираємо клас відображення, щоб сторінки не накладалися одна на одну
+                            loadedSection.classList.remove('active-section');
+                        }
+                    }
+                } catch(e) {
+                    console.log("Для локального тестування файлів запустіть Live Server у VS Code.");
+                }
+            }
+        }
+        
+        // Запускаємо завантаження підсторінок одразу при відкритті сайту
+        loadSections();
+    </script>
+</body>
+</html>
